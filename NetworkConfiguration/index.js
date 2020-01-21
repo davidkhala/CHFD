@@ -1,18 +1,22 @@
 const {Gateway} = require('fabric-network');
-const yaml = require('js-yaml');// TODO do we need this?
-
-const connectionProfile = yaml.safeLoad(fs.readFileSync('../gateway/paperNet.yaml', 'utf8'));
-
-
-
+const path = require('path');
+const {connectionProfile} = process.env;
+const connectionProfileFile = path.resolve(connectionProfile);
 //TODO WIP
+const wallet = {};
 const task = async (action) => {
+	let gateway;
 	switch (action) {
 		case 'connectGateway':
-			const gateway = new Gateway();
-			await gateway.connect(connectionProfile, connectionOptions);
-			break;
-		case '':
+			gateway = new Gateway();
+			await gateway.connect(connectionProfileFile, {wallet});
+			return gateway;
+		case 'getNetworks':
+			gateway = await task('connectGateway');
+			const {channelName} = process.env;
+			const network = await gateway.getNetwork(channelName);
+			//TODO  Error: No identity has been assigned to this client
+			console.log(network);
 			break;
 	}
 };
