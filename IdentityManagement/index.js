@@ -1,23 +1,18 @@
 const {FileSystemWallet, X509WalletMixin} = require('fabric-network');
 const path = require('path');
 const fs = require('fs');
-
+const {instantiateWallet,importIdentities} =require('./wallet')
 const task = async (action) => {
 
 	let wallet, identity;
 	switch (action) {
 		case 'instantiateWallet':
 			const {walletPath} = process.env;
-			const pathResolved = path.resolve(walletPath);
-			console.log('walletPath', pathResolved);
-			return new FileSystemWallet(pathResolved);
+			return instantiateWallet(walletPath);
 		case 'importIdentities':
 			wallet = await task('instantiateWallet');
 			const {certPath, keyPath, mspId, label: identityLabel} = process.env;
-			const cert = fs.readFileSync(path.resolve(certPath)).toString();
-			const key = fs.readFileSync(path.resolve(keyPath)).toString();
-			identity = X509WalletMixin.createIdentity(mspId, cert, key);
-			await wallet.import(identityLabel, identity);
+			await importIdentities(wallet, certPath,keyPath,mspId,identityLabel);
 			return wallet;
 		case 'manageIdentity':
 			//Select and manage identity from a wallet

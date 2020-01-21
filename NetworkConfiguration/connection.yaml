@@ -6,8 +6,10 @@ client:
   connection:
     timeout:
       peer:
-        endorser: '300'
-      orderer: '300'
+        endorser: 300
+        eventHub: 60
+        eventReg: 3
+      orderer: 300
 channels:
   mychannel:
     orderers:
@@ -33,9 +35,18 @@ channels:
         # produce events but the app typically only needs to connect to one to listen to events.
         # Default: true
         eventSource: true
+        # Will this peer be the target of Discovery requests.
+        # Default: true
+        discover: true
 organizations:
   Org1:
     mspid: Org1MSP
+    adminPrivateKey:
+      # FIXME REPLACE with Practical Path
+      path: /home/davidliu/Documents/CHFD/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/5ba12183ab07014ba831f9a79cf51fe7e6f62cdebe6193f070445243aedddee9_sk
+    signedCert:
+      # FIXME REPLACE with Practical Path
+      path: /home/davidliu/Documents/CHFD/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
     peers:
       - peer0.org1.example.com
       - peer1.org1.example.com
@@ -43,19 +54,28 @@ organizations:
       - ca.example.com
 orderers:
   orderer.example.com:
-    url: grpc://localhost:7050
+    url: grpcs://localhost:7050
     grpcOptions:
       ssl-target-name-override: orderer.example.com
+    tlsCACerts:
+      # FIXME REPLACE with Practical Path
+      path: /home/davidliu/Documents/CHFD/crypto-config/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
 peers:
   peer0.org1.example.com:
-    url: grpc://localhost:7051
+    url: grpcs://localhost:7051
     grpcOptions:
       ssl-target-name-override: peer0.org1.example.com
       request-timeout: 120001
+    tlsCACerts:
+      # FIXME REPLACE with Practical Path
+      path: /home/davidliu/Documents/CHFD/crypto-config/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
 certificateAuthorities:
   ca.example.com:
     url: http://localhost:7054
     caName: ca.example.com
+    tlsCACerts:
+      # FIXME REPLACE with Practical Path
+      path: /home/davidliu/Documents/CHFD/crypto-config/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
     # the properties specified under this object are passed to the 'http' client verbatim when
     # making the request to the Fabric-CA server
     httpOptions:
