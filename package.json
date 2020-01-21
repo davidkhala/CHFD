@@ -1,5 +1,5 @@
 {
-  "name": "identity-management",
+  "name": "chfd",
   "version": "1.0.0",
   "dependencies": {
     "fabric-network": "^1.4.5"

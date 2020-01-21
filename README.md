@@ -4,7 +4,7 @@ Certified Hyperledger Fabric Developer (CHFD) learning notes
 
 ## CHFD Domains & Competencies v1.0
 
-### Identity Management – 7%
+### [Identity Management – 7%](./IdentityManagement/README.md)
 
 - Instantiate a wallet
 - Import identities to a wallet
